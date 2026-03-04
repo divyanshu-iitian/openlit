@@ -40,6 +40,16 @@ class ContextFilter(logging.Filter):
 
 
 def setup_logger(application_name, environment):
+    """
+    Set up a JSON logger with the specified application name and environment.
+
+    Args:
+        application_name (str): The name of the application.
+        environment (str): The environment in which the application is running.
+
+    Returns:
+        logging.Logger: A configured logger instance.
+    """
     logger = logging.getLogger("otel-gpu-collector")
     logger.setLevel(logging.INFO)
 
@@ -67,12 +77,22 @@ keep_running = Event()
 
 
 def signal_handler(sig, frame):
+    """
+    Handle termination signals by setting the keep_running event.
+
+    Args:
+        sig (int): The signal number.
+        frame (frame object): The current stack frame.
+    """
     global keep_running
     logger.info("Received termination signal", extra={"signal": sig})
     keep_running.set()
 
 
 def main():
+    """
+    Main function to run the GPU OpenTelemetry collector.
+    """
     logger.info("Starting otel-gpu-collector")
 
     try:
